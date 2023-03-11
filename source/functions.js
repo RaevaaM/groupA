@@ -7,8 +7,17 @@ Criteria
  */
 
 /**
- * 
- * 
+ * @constant {*} constants - value cannot be changed
+ * @property {string} TEXT - value is 'text'; cannot be changed
+ * @property {string} NUMBER - value is 'number'; cannot be changed
+ * @property {string} BOOLEAN - value is 'boolean'; cannot be changed
+ * @property {string} DATE - value is 'date'; cannot be changed
+ * @property {string} TIME - value is 'time'; cannot be changed
+ * @property {string} TIMESPAN - value is 'timespan'; cannot be changed
+ * @property {string} CHECKBOX - value is 'checkbox'; cannot be changed
+ * @property {string} ENUM - value is 'enum'; cannot be changed
+ * @property {string} CURRENCY - value is 'currency'; cannot be changed
+ * @returns Returns column types as properties. Their values cannot be changed.
  */
 export const COLUMN_TYPE = {
     TEXT: 'text',
@@ -25,28 +34,29 @@ export const COLUMN_TYPE = {
 
 /**
  * 
- * @param {any} c
- * @param {any} item
+ * @param {any} c - value
+ * @param {string} item - 
+ * @returns Returns dynamic type, which means type of the variable 'item' is based on the value assigned to at run time. Or it returns type of 'c'.
  */
 export const colType = (c, item) => c.dynamicType?.(item) || c.type;
 
 /**
  * 
  * @param {number} value - currency value
- * Returns value formatted into string => "{number}$"
+ * @returns Returns value formatted into string => "{number}$"
  */
 export const formatCurrency = (value) => "$" + value.toString();
 
 /**
  * External function
- * @param value
+ * @param {number} value
  * @returns {*} formatted time string
  */
 const formatTime = value => value;
 
 /**
  * External function
- * @param value
+ * @param {number} value
  * @returns {*} formatted TimeSpan string
  */
 const formatTimeSpan = value => value;
@@ -63,14 +73,20 @@ const formatDate = value => value;
  * @param {object[]} array of objects
  * @param {string[]} keys
  * @param {boolean} asc - how objects to be sorted
- * @param {undefined} valueFormatter
- * @param {boolean|undefined} ifCallback
+ * @param {undefined} valueFormatter {function}
+ * @param {boolean|undefined} ifCallback {function}
  * @returns Returns a copy of section of the array sorted by asc. After that comparator compare the values of the objects
  */
 export function sortBy(array, keys, asc = true, valueFormatter = undefined, ifCallback = undefined) {
     return array.slice().sort((a, b) => comparator(a, b, keys, asc, valueFormatter, ifCallback));
 }
 
+/**
+ * 
+ * @param {number|string} col
+ * @param {any} item - value of any type
+ * @returns Returns value of the cell of item formatted in different column types
+ */
 export function formatCellContent(col, item) {
     let formattedValue = col.key ? item[col.key] : item;
 
@@ -94,6 +110,12 @@ export function formatCellContent(col, item) {
     return formattedValue;
 }
 
+/**
+ * @function groupBy - groups list by key (index)
+ * @param {any} list
+ * @param {number} key
+ * @returns Returns array 'res' with new lenght because of push method which adds one or more elements to the end. 
+ */
 export function groupBy(list, key) {
     return list.reduce((res, x) => {
         (res[x[key]] = res[x[key]] || []).push(x);
@@ -101,6 +123,12 @@ export function groupBy(list, key) {
     }, {});
 }
 
+/**
+ * @function enumerateData
+ * @param {any} data
+ * @param {string} propertyName
+ * @returns Returns HTML list of data items which values are not required to change. There is a choice item to be clicked. 
+ */
 export function enumerateData(data, propertyName) {
 
     if (!data || !Array.isArray(data))
